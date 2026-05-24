@@ -6,7 +6,7 @@ services:
   mariadb:
     build: 
       context: .
-      dockerfile: config/mariadb/Dockerfile-mariadb
+      dockerfile: config/mariadb/Dockerfile
     container_name: ${ENV_CONTAINER_NAME}-mariadb
     volumes:
     # create persistent docker volume
