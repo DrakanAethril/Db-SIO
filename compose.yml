@@ -1,0 +1,43 @@
+###############################################################
+# Maria DB server + PostGreSQL Server + Adminer + PhpMyAdmin
+###############################################################
+version: "3"
+
+services:
+
+  mariadb:
+    build: 
+      context: .
+      dockerfile: Dockerfile-mariadb
+    container_name: ${ENV_CONTAINER_NAME}-mariadb
+    volumes:
+    # create persistent docker volume
+    - ./data:/var/lib/mariadb
+    # mount configuration
+    - ./config/:/etc/maria-db/conf.d
+    restart: always   
+    environment:
+    - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+    - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+    - MYSQL_USER=${MYSQL_USER}
+    - MYSQL_DATABASE=${MYSQL_DATABASE}
+    - MYSQL_ALLOW_EMPTY_PASSWORD=no
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    restart: always
+    container_name: ${ENV_CONTAINER_NAME}-phpmyadmin
+    ports:
+      - 8080:80
+    links:
+      - mariadb:mariadb
+    depends_on:
+      - "mariadb"
+    environment:
+      - PMA_ABSOLUTE_URI=${ENV_PHPMYADMIN_URI}
+      - PMA_HOST=mariadb
+      - UPLOAD_LIMIT=2G
+    
+# default network for this docker stack
+networks:
+  default:
