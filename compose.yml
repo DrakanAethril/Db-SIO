@@ -1,20 +1,18 @@
 ###############################################################
 # Maria DB server + PostGreSQL Server + Adminer + PhpMyAdmin
 ###############################################################
-version: "3"
-
 services:
 
   mariadb:
     build: 
       context: .
-      dockerfile: Dockerfile-mariadb
+      dockerfile: config/mariadb/Dockerfile-mariadb
     container_name: ${ENV_CONTAINER_NAME}-mariadb
     volumes:
     # create persistent docker volume
     - ./data:/var/lib/mariadb
     # mount configuration
-    - ./config/:/etc/maria-db/conf.d
+    - ./config/:/etc/mariadb/conf.d
     restart: always   
     environment:
     - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
