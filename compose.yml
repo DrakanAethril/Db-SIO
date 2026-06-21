@@ -63,7 +63,7 @@ services:
 
   adminer:
     image: adminer:latest
-    container_name: adminer
+    container_name: ${ENV_CONTAINER_NAME}-adminer
     restart: always
     depends_on:
       - "postgres"
